@@ -1,0 +1,16 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+
+[deps]
+
+files=[ "res://stages/loadout/locale/gizmo_selector.en_US.translation" ]
+
+source_file="res://stages/loadout/locale/gizmo_selector.csv"
+dest_files=[ "res://stages/loadout/locale/gizmo_selector.en_US.translation" ]
+
+[params]
+
+compress=true
+delimiter=0

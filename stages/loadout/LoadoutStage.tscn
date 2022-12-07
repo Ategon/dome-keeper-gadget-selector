@@ -1,0 +1,1092 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://stages/loadout/LoadoutTileData.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gui/theme.tres" type="Theme" id=2]
+[ext_resource path="res://gui/fonts/FontHeading.tres" type="DynamicFont" id=3]
+[ext_resource path="res://stages/loadout/LoadoutStage.gd" type="Script" id=4]
+[ext_resource path="res://stages/loadout/world/LoadoutWorld.tscn" type="PackedScene" id=5]
+[ext_resource path="res://content/map/Map.tscn" type="PackedScene" id=6]
+[ext_resource path="res://stages/loadout/LoadoutCamera.gd" type="Script" id=7]
+[ext_resource path="res://stages/loadout/LoadoutChoicePopup.gd" type="Script" id=8]
+[ext_resource path="res://stages/loadout/HittableLetters.gd" type="Script" id=9]
+[ext_resource path="res://gui/panels/panel_outside.tres" type="StyleBox" id=10]
+[ext_resource path="res://stages/loadout/relic_chamber.png" type="Texture" id=11]
+[ext_resource path="res://stages/loadout/RelichuntPopup.gd" type="Script" id=12]
+[ext_resource path="res://content/shared/difficulty/DifficultyBadge.tscn" type="PackedScene" id=13]
+[ext_resource path="res://content/icons/loadout_diff1.png" type="Texture" id=14]
+[ext_resource path="res://stages/loadout/PrestigePopup.gd" type="Script" id=15]
+[ext_resource path="res://stages/loadout/dummy.png" type="Texture" id=16]
+[ext_resource path="res://content/monster/FlashMaterial.tres" type="Material" id=17]
+[ext_resource path="res://stages/loadout/Monster.gd" type="Script" id=18]
+[ext_resource path="res://stages/loadout/MinerPopup.gd" type="Script" id=19]
+[ext_resource path="res://gui/fonts/FontLarge.tres" type="DynamicFont" id=20]
+[ext_resource path="res://gui/fonts/hungarian/FontSmall.tres" type="DynamicFont" id=21]
+
+[sub_resource type="SpriteFrames" id=108]
+animations = [ {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=34]
+radius = 12.0
+height = 8.0
+
+[sub_resource type="Gradient" id=107]
+offsets = PoolRealArray( 0.0683594, 0.160156, 0.322266, 0.931641 )
+colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 107 )
+
+[sub_resource type="ButtonGroup" id=3]
+
+[sub_resource type="ButtonGroup" id=4]
+
+[sub_resource type="ButtonGroup" id=5]
+
+[node name="LoadoutStage" type="Node"]
+script = ExtResource( 4 )
+
+[node name="Map" parent="." instance=ExtResource( 6 )]
+
+[node name="LoadoutWorld" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, 12 )
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["cameras"]]
+position = Vector2( 0, 34 )
+current = true
+zoom = Vector2( 0.333, 0.333 )
+process_mode = 0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+script = ExtResource( 7 )
+
+[node name="LoadoutTileData" parent="." instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -12, 70 )
+
+[node name="ShootableHeadline" type="HBoxContainer" parent="."]
+margin_left = -319.0
+margin_top = -152.0
+margin_right = 1597.0
+margin_bottom = 1.0
+grow_horizontal = 2
+rect_scale = Vector2( 0.333, 0.333 )
+custom_constants/separation = 8
+alignment = 1
+script = ExtResource( 9 )
+
+[node name="DomePosition" type="Position2D" parent="."]
+position = Vector2( 0, 6 )
+
+[node name="KeeperPosition1" type="Position2D" parent="."]
+position = Vector2( -154, 131 )
+
+[node name="KeeperPosition2" type="Position2D" parent="."]
+position = Vector2( -256, 130 )
+
+[node name="KeeperPosition3" type="Position2D" parent="."]
+position = Vector2( -249, 121 )
+
+[node name="KeeperPosition4" type="Position2D" parent="."]
+position = Vector2( -148, 109 )
+
+[node name="KeeperPosition5" type="Position2D" parent="."]
+position = Vector2( -266, 107 )
+
+[node name="KeeperPosition6" type="Position2D" parent="."]
+position = Vector2( -266, 145 )
+
+[node name="KeeperPosition7" type="Position2D" parent="."]
+position = Vector2( -188, 106 )
+
+[node name="Dummy" type="Area2D" parent="." groups=["monster"]]
+position = Vector2( -88, 9 )
+collision_layer = 128
+collision_mask = 0
+script = ExtResource( 18 )
+techId = "dummy"
+
+[node name="Sprite" type="AnimatedSprite" parent="Dummy"]
+material = ExtResource( 17 )
+position = Vector2( 1, -18 )
+frames = SubResource( 108 )
+
+[node name="HitboxDefault" type="CollisionShape2D" parent="Dummy"]
+position = Vector2( 2, -17 )
+shape = SubResource( 34 )
+
+[node name="HitPosition" type="Position2D" parent="Dummy"]
+position = Vector2( 25, -15 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -2014.99, 48.3516 )
+rotation = 1.5708
+scale = Vector2( 0.0372184, 3955.05 )
+z_index = 500
+texture = SubResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -556.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
+margin_right = 611.0
+margin_bottom = 607.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+
+[node name="Menu" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
+margin_left = 615.0
+margin_right = 1304.0
+margin_bottom = 607.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource( 2 )
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/Menu"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 673.0
+margin_bottom = 591.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 625.0
+margin_bottom = 543.0
+size_flags_horizontal = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer"]
+margin_right = 593.0
+margin_bottom = 438.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 581.0
+margin_bottom = 426.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 553.0
+margin_bottom = 398.0
+custom_constants/separation = 50
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 537.0
+margin_bottom = 382.0
+grow_horizontal = 2
+custom_constants/vseparation = 10
+custom_constants/hseparation = 60
+columns = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 14.0
+margin_right = 227.0
+margin_bottom = 37.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 20 )
+text = "loadout.dome"
+align = 1
+
+[node name="Label5" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 301.0
+margin_right = 537.0
+margin_bottom = 37.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 20 )
+text = "loadout.keeper"
+align = 1
+
+[node name="DomeButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 47.0
+margin_right = 241.0
+margin_bottom = 104.0
+text = "Laser Dome"
+
+[node name="KeeperButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 301.0
+margin_top = 47.0
+margin_right = 537.0
+margin_bottom = 104.0
+text = "Engineer"
+
+[node name="PetButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 114.0
+margin_right = 241.0
+margin_bottom = 171.0
+text = "loadout.pet"
+
+[node name="PetPlaceholder" type="Control" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+visible = false
+margin_left = 301.0
+margin_top = 114.0
+margin_right = 537.0
+margin_bottom = 171.0
+
+[node name="SkinButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 301.0
+margin_top = 114.0
+margin_right = 537.0
+margin_bottom = 171.0
+text = "loadout.skin"
+
+[node name="SkinPlaceholder" type="Control" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+visible = false
+margin_top = 181.0
+margin_right = 213.0
+margin_bottom = 201.0
+
+[node name="Control" type="Control" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 181.0
+margin_right = 241.0
+margin_bottom = 201.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Control2" type="Control" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 301.0
+margin_top = 181.0
+margin_right = 537.0
+margin_bottom = 201.0
+
+[node name="Label3" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 211.0
+margin_right = 241.0
+margin_bottom = 248.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 20 )
+text = "loadout.gadget"
+align = 1
+
+[node name="Label6" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 312.0
+margin_top = 211.0
+margin_right = 525.0
+margin_bottom = 248.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 20 )
+text = "loadout.mode"
+align = 1
+
+[node name="GadgetButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 258.0
+margin_right = 241.0
+margin_bottom = 315.0
+focus_neighbour_right = NodePath("../ModeButton")
+focus_neighbour_bottom = NodePath("../../../../../HBoxContainer/QuitLoadoutButton")
+text = "Orchard"
+
+[node name="ModeButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 301.0
+margin_top = 258.0
+margin_right = 537.0
+margin_bottom = 315.0
+focus_neighbour_left = NodePath("../GadgetButton")
+focus_neighbour_bottom = NodePath("../../../../../HBoxContainer/ProceedToSecondStageButton")
+text = "Migration"
+
+[node name="GizmoButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 325.0
+margin_right = 241.0
+margin_bottom = 382.0
+focus_neighbour_right = NodePath("../ModeButton")
+focus_neighbour_bottom = NodePath("../../../../../HBoxContainer/QuitLoadoutButton")
+text = "Gizmo"
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer"]
+visible = false
+margin_left = 83.0
+margin_top = 336.0
+margin_right = 337.0
+margin_bottom = 514.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer2"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 242.0
+margin_bottom = 166.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer2/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 214.0
+margin_bottom = 138.0
+
+[node name="Label3" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+margin_right = 198.0
+margin_bottom = 37.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 20 )
+text = "DIFFICULTY"
+align = 1
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+margin_top = 53.0
+margin_right = 198.0
+margin_bottom = 81.0
+max_value = 2.0
+value = 1.0
+tick_count = 3
+
+[node name="Label4" type="Label" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+margin_left = 65.0
+margin_top = 97.0
+margin_right = 132.0
+margin_bottom = 122.0
+size_flags_horizontal = 4
+text = "brutal"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer"]
+margin_top = 454.0
+margin_right = 593.0
+margin_bottom = 511.0
+
+[node name="QuitLoadoutButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 288.0
+margin_bottom = 57.0
+focus_neighbour_top = NodePath("../../PanelContainer/MarginContainer/VBoxContainer/GridContainer/GadgetButton")
+size_flags_horizontal = 3
+text = "loadout.abort"
+
+[node name="ProceedToSecondStageButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 304.0
+margin_right = 593.0
+margin_bottom = 57.0
+focus_neighbour_top = NodePath("../../PanelContainer/MarginContainer/VBoxContainer/GridContainer/ModeButton")
+size_flags_horizontal = 3
+text = "loadout.proceed"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
+margin_left = 1308.0
+margin_right = 1920.0
+margin_bottom = 607.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 30
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 30
+
+[node name="Control" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/MarginContainer"]
+margin_left = 30.0
+margin_top = 256.0
+margin_right = 582.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 500, 0 )
+size_flags_vertical = 4
+theme = ExtResource( 2 )
+
+[node name="ModeTop" type="Label" parent="CanvasLayer/HBoxContainer/MarginContainer/Control"]
+margin_right = 552.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 20 )
+text = "loadout.relic.top"
+align = 1
+autowrap = true
+
+[node name="ModeTextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer/MarginContainer/Control"]
+margin_top = 53.0
+margin_right = 552.0
+margin_bottom = 53.0
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 6
+
+[node name="ModeBottom" type="Label" parent="CanvasLayer/HBoxContainer/MarginContainer/Control"]
+margin_top = 69.0
+margin_right = 552.0
+margin_bottom = 94.0
+size_flags_horizontal = 3
+text = "loadout.relic.bot"
+align = 1
+autowrap = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.533333 )
+
+[node name="ChoicePopup" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme = ExtResource( 2 )
+script = ExtResource( 8 )
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ChoicePopup"]
+margin_left = 948.0
+margin_top = 528.0
+margin_right = 972.0
+margin_bottom = 552.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ChoicePopup/PanelContainer"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 503.0
+margin_bottom = 125.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 475.0
+margin_bottom = 897.0
+
+[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 459.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Choose your ???"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer"]
+rect_min_size = Vector2( 0, 800 )
+scroll_horizontal_enabled = false
+
+[node name="ChoicesContainer" type="GridContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+size_flags_horizontal = 4
+columns = 2
+
+[node name="Tween" type="Tween" parent="CanvasLayer/ChoicePopup"]
+
+[node name="RelichuntPopup" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme = ExtResource( 2 )
+script = ExtResource( 12 )
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/RelichuntPopup"]
+margin_left = 928.0
+margin_top = 508.0
+margin_right = 992.0
+margin_bottom = 572.0
+custom_styles/panel = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 1252.0
+margin_bottom = 1034.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 1204.0
+margin_bottom = 986.0
+
+[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 1188.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "loadout.difficulty.title"
+align = 1
+
+[node name="DifficultyIcon" type="TextureRect" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer" groups=["unstyled"]]
+margin_top = 81.0
+margin_right = 1188.0
+margin_bottom = 241.0
+rect_min_size = Vector2( 280, 160 )
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 257.0
+margin_right = 1188.0
+margin_bottom = 314.0
+
+[node name="DifficultyButton4" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 313.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 3 )
+text = "loadout.difficulty.veryeasy"
+
+[node name="DifficultyButton1" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 329.0
+margin_right = 594.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 3 )
+text = "loadout.difficulty.easy"
+
+[node name="DifficultyButton2" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 610.0
+margin_right = 907.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 3 )
+text = "loadout.difficulty.medium"
+
+[node name="DifficultyButton3" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 923.0
+margin_right = 1188.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 3 )
+text = "loadout.difficulty.hard"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 330.0
+margin_right = 1188.0
+margin_bottom = 414.0
+alignment = 1
+
+[node name="EasierButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 315.0
+margin_top = 13.0
+margin_right = 495.0
+margin_bottom = 70.0
+size_flags_vertical = 4
+text = "loadout.easier"
+
+[node name="DifficultyBadge" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource( 13 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 511.0
+margin_right = 669.0
+margin_bottom = 84.0
+
+[node name="HarderButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 685.0
+margin_top = 13.0
+margin_right = 873.0
+margin_bottom = 70.0
+size_flags_vertical = 4
+text = "loadout.harder"
+
+[node name="DifficultyExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 330.0
+margin_right = 1188.0
+margin_bottom = 355.0
+rect_min_size = Vector2( 500, 0 )
+align = 1
+autowrap = true
+
+[node name="MapSizeBox" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 371.0
+margin_right = 1188.0
+margin_bottom = 549.0
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
+margin_right = 1188.0
+margin_bottom = 24.0
+
+[node name="PanelTitleLabel3" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
+margin_top = 40.0
+margin_right = 1188.0
+margin_bottom = 105.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "loadout.mapsize.title"
+align = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
+margin_top = 121.0
+margin_right = 1188.0
+margin_bottom = 178.0
+
+[node name="MapSizeButton1" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
+margin_right = 284.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 4 )
+text = "loadout.mapsize.small"
+
+[node name="MapSizeButton2" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
+margin_left = 300.0
+margin_right = 588.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 4 )
+text = "loadout.mapsize.medium"
+
+[node name="MapSizeButton3" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
+margin_left = 604.0
+margin_right = 888.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 4 )
+text = "loadout.mapsize.large"
+
+[node name="MapSizeButton4" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
+margin_left = 904.0
+margin_right = 1188.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 4 )
+text = "loadout.mapsize.huge"
+
+[node name="MapSizeExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
+visible = false
+margin_top = 194.0
+margin_right = 1188.0
+margin_bottom = 219.0
+rect_min_size = Vector2( 500, 0 )
+align = 1
+autowrap = true
+
+[node name="ModifiersBox" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 565.0
+margin_right = 1188.0
+margin_bottom = 857.0
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
+margin_right = 1188.0
+margin_bottom = 24.0
+
+[node name="PanelTitleLabel3" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
+margin_top = 40.0
+margin_right = 1188.0
+margin_bottom = 105.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "loadout.relichunt.modifiers"
+align = 1
+
+[node name="HBoxContainer3" type="GridContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
+margin_top = 121.0
+margin_right = 1188.0
+margin_bottom = 251.0
+columns = 2
+
+[node name="ModHyperactiveButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
+margin_right = 586.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.mode.hyperactive"
+align = 1
+
+[node name="ModLongTimeButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
+margin_left = 602.0
+margin_right = 1188.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.mode.longtime"
+align = 1
+
+[node name="ModMazeButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
+margin_top = 73.0
+margin_right = 586.0
+margin_bottom = 130.0
+size_flags_horizontal = 3
+text = "loadout.mode.maze"
+align = 1
+
+[node name="ModDoubleIronButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
+margin_left = 602.0
+margin_top = 73.0
+margin_right = 1188.0
+margin_bottom = 130.0
+size_flags_horizontal = 3
+text = "loadout.mode.doubleiron"
+align = 1
+
+[node name="ModifierExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
+margin_top = 267.0
+margin_right = 1188.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 500, 0 )
+align = 1
+autowrap = true
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 873.0
+margin_right = 1188.0
+margin_bottom = 897.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 913.0
+margin_right = 1188.0
+margin_bottom = 970.0
+
+[node name="CancelButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 586.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.cancel"
+
+[node name="StartButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 602.0
+margin_right = 1188.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.start"
+
+[node name="Control" type="Control" parent="CanvasLayer/RelichuntPopup"]
+margin_left = 960.0
+margin_top = 540.0
+margin_right = 960.0
+margin_bottom = 540.0
+
+[node name="HintPopup" type="PanelContainer" parent="CanvasLayer/RelichuntPopup/Control"]
+margin_left = 184.0
+margin_top = -127.0
+margin_right = 585.0
+margin_bottom = -46.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/RelichuntPopup/Control/HintPopup"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 389.0
+margin_bottom = 69.0
+
+[node name="HintLabel" type="Label" parent="CanvasLayer/RelichuntPopup/Control/HintPopup/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 361.0
+margin_bottom = 41.0
+text = "pause.quit.popup"
+autowrap = true
+
+[node name="Tween" type="Tween" parent="CanvasLayer/RelichuntPopup"]
+
+[node name="PrestigePopup" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme = ExtResource( 2 )
+script = ExtResource( 15 )
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PrestigePopup"]
+margin_left = 560.0
+margin_top = 310.0
+margin_right = 1360.0
+margin_bottom = 770.0
+rect_min_size = Vector2( 800, 460 )
+custom_styles/panel = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PrestigePopup/PanelContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 977.0
+margin_bottom = 428.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 929.0
+margin_bottom = 380.0
+
+[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 913.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "loadout.prestige.title"
+align = 1
+
+[node name="HBoxContainer" type="GridContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 81.0
+margin_right = 913.0
+margin_bottom = 138.0
+columns = 3
+
+[node name="PrestigeMode1Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 280.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 5 )
+text = "loadout.prestige.normal"
+
+[node name="PrestigeMode2Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 296.0
+margin_right = 570.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 5 )
+text = "loadout.prestige.cobalt"
+
+[node name="PrestigeMode3Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 586.0
+margin_right = 913.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+toggle_mode = true
+group = SubResource( 5 )
+text = "loadout.prestige.countdown"
+
+[node name="ModeExplanationLabel" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 154.0
+margin_right = 913.0
+margin_bottom = 234.0
+rect_min_size = Vector2( 500, 80 )
+size_flags_horizontal = 3
+align = 1
+autowrap = true
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 267.0
+margin_right = 913.0
+margin_bottom = 291.0
+size_flags_vertical = 10
+
+[node name="PanelTitleLabel2" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 194.0
+margin_right = 521.0
+margin_bottom = 259.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Difficulty"
+align = 1
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 275.0
+margin_right = 521.0
+margin_bottom = 299.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 307.0
+margin_right = 913.0
+margin_bottom = 364.0
+
+[node name="CancelButton" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 448.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.cancel"
+
+[node name="StartButton" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 464.0
+margin_right = 913.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.start"
+
+[node name="Tween" type="Tween" parent="CanvasLayer/PrestigePopup"]
+
+[node name="MinerPopup" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+theme = ExtResource( 2 )
+script = ExtResource( 19 )
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MinerPopup"]
+margin_left = 560.0
+margin_top = 310.0
+margin_right = 1360.0
+margin_bottom = 770.0
+rect_min_size = Vector2( 800, 460 )
+custom_styles/panel = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MinerPopup/PanelContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 969.0
+margin_bottom = 484.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 921.0
+margin_bottom = 436.0
+
+[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 905.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "loadout.miner.title"
+align = 1
+
+[node name="HBoxContainer3" type="GridContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 81.0
+margin_right = 905.0
+margin_bottom = 211.0
+custom_constants/hseparation = 32
+columns = 2
+
+[node name="OptionScoresButton" type="CheckBox" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 323.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "loadout.miner.scores.title"
+align = 1
+
+[node name="Label1" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 355.0
+margin_top = 16.0
+margin_right = 905.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 550, 0 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 21 )
+text = "loadout.miner.scores"
+autowrap = true
+
+[node name="OptionFuelButton" type="CheckBox" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_top = 73.0
+margin_right = 323.0
+margin_bottom = 130.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "loadout.miner.fuel.title"
+align = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 355.0
+margin_top = 89.0
+margin_right = 905.0
+margin_bottom = 113.0
+rect_min_size = Vector2( 550, 0 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 21 )
+text = "loadout.miner.fuel"
+autowrap = true
+
+[node name="ModeExplanationLabel" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 227.0
+margin_right = 905.0
+margin_bottom = 307.0
+rect_min_size = Vector2( 500, 80 )
+size_flags_horizontal = 3
+align = 1
+autowrap = true
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 323.0
+margin_right = 905.0
+margin_bottom = 347.0
+size_flags_vertical = 10
+
+[node name="PanelTitleLabel2" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 194.0
+margin_right = 521.0
+margin_bottom = 259.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Difficulty"
+align = 1
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 275.0
+margin_right = 521.0
+margin_bottom = 299.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 363.0
+margin_right = 905.0
+margin_bottom = 420.0
+
+[node name="CancelButton" type="Button" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 444.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.cancel"
+
+[node name="StartButton" type="Button" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 460.0
+margin_right = 905.0
+margin_bottom = 57.0
+size_flags_horizontal = 3
+text = "loadout.secondstage.start"
+
+[node name="Tween" type="Tween" parent="CanvasLayer/MinerPopup"]
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/DomeButton" to="." method="_on_DomeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/KeeperButton" to="." method="_on_KeeperButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PetButton" to="." method="_on_PetButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/SkinButton" to="." method="_on_SkinButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GadgetButton" to="." method="_on_GadgetButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/ModeButton" to="." method="_on_ModeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GizmoButton" to="." method="_on_GizmoButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/QuitLoadoutButton" to="." method="_on_QuitLoadoutButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/ProceedToSecondStageButton" to="." method="_on_ProceedToSecondStageButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton4" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton4_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton1" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton1_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton2" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton2_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton3" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton3_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/EasierButton" to="CanvasLayer/RelichuntPopup" method="_on_EasierButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/HarderButton" to="CanvasLayer/RelichuntPopup" method="_on_HarderButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton1" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton1_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton2" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton2_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton3" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton3_pressed"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton4" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton4_pressed"]
+[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModHyperactiveButton" to="CanvasLayer/RelichuntPopup" method="_on_ModHyperactiveButton_toggled"]
+[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModLongTimeButton" to="CanvasLayer/RelichuntPopup" method="_on_ModLongTimeButton_toggled"]
+[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModMazeButton" to="CanvasLayer/RelichuntPopup" method="_on_ModMazeButton_toggled"]
+[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModDoubleIronButton" to="CanvasLayer/RelichuntPopup" method="_on_ModDoubleIronButton_toggled"]
+[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_entered"]
+[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_exited"]
+[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_pressed"]
+[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_entered"]
+[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_exited"]
+[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_pressed"]
+[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_entered"]
+[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_exited"]
+[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="toggled" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionScoresButton" to="CanvasLayer/MinerPopup" method="_on_OptionScoresButton_toggled"]
+[connection signal="toggled" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionFuelButton" to="CanvasLayer/MinerPopup" method="_on_OptionFuelButton_toggled"]
+[connection signal="pressed" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]

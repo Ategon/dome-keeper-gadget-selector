@@ -1,0 +1,7 @@
+key,en_US
+loadout.gizmooptions.title,Choose your starting Gizmo!
+upgrades.gizmo0.title, 
+upgrades.gizmo0.desc, 
+loadout.versionoptions.title,Warning!
+upgrades.invalidversion.title,This mod (Gadget Selector) is currently built to support an outdated version!
+upgrades.invalidversion.desc,Not all new features may show up if that part of the game has been edited by the mod. Open up an issue on our github repository (https://github.com/Ategon/dome-keeper-gadget-selector) if one doesn't exist already and ill get to fixing it. Click this button to continue
