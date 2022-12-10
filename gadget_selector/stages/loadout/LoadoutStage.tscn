@@ -474,6 +474,7 @@ rect_min_size = Vector2( 0, 800 )
 scroll_horizontal_enabled = false
 
 [node name="ChoicesContainer" type="GridContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+size_flags_horizontal = 4
 columns = 2
 
 [node name="Tween" type="Tween" parent="CanvasLayer/ChoicePopup"]

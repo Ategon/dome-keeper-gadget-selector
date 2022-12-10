@@ -11,7 +11,7 @@ var keeper
 var dome
 var pet
 
-var gizmoId
+var gizmoId = "gizmo0"
 var gadgetId
 var keeperId
 var domeId
