@@ -296,7 +296,7 @@ margin_top = 258.0
 margin_right = 241.0
 margin_bottom = 315.0
 focus_neighbour_right = NodePath("../ModeButton")
-focus_neighbour_bottom = NodePath("../../../../../HBoxContainer/QuitLoadoutButton")
+focus_neighbour_bottom = NodePath("../GizmoButton")
 text = "Orchard"
 
 [node name="ModeButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
@@ -312,6 +312,7 @@ text = "Migration"
 margin_top = 325.0
 margin_right = 241.0
 margin_bottom = 382.0
+focus_neighbour_top = NodePath("../GadgetButton")
 focus_neighbour_right = NodePath("../ModeButton")
 focus_neighbour_bottom = NodePath("../../../../../HBoxContainer/QuitLoadoutButton")
 text = "Gizmo"
@@ -370,7 +371,7 @@ margin_bottom = 511.0
 [node name="QuitLoadoutButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_right = 288.0
 margin_bottom = 57.0
-focus_neighbour_top = NodePath("../../PanelContainer/MarginContainer/VBoxContainer/GridContainer/GadgetButton")
+focus_neighbour_top = NodePath("../../PanelContainer/MarginContainer/VBoxContainer/GridContainer/GizmoButton")
 size_flags_horizontal = 3
 text = "loadout.abort"
 
@@ -473,7 +474,6 @@ rect_min_size = Vector2( 0, 800 )
 scroll_horizontal_enabled = false
 
 [node name="ChoicesContainer" type="GridContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
-size_flags_horizontal = 4
 columns = 2
 
 [node name="Tween" type="Tween" parent="CanvasLayer/ChoicePopup"]

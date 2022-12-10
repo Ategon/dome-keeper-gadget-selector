@@ -506,6 +506,7 @@ func setGadget(gadgetId:String):
 func setGizmo(gizmoId:String):
 	self.gizmoId = "" if gizmoId == "gizmo0" else gizmoId
 	GameWorld.gadgetToKeep = self.gizmoId
+	GameWorld.keptGadgetUsed = false
 	if(self.gizmoId != ""): Data.unlockGadget(self.gizmoId)
 	if(self.gizmoId != ""): dome.unlockGadget(Data.gadgets.get(self.gizmoId, {}))
 	find_node("GizmoButton").text = "Gizmo" if self.gizmoId == "" else tr("upgrades." + self.gizmoId + ".title")
