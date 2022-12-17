@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://stages/loadout/LoadoutTileData.tscn" type="PackedScene" id=1]
 [ext_resource path="res://gui/theme.tres" type="Theme" id=2]
@@ -11,23 +11,30 @@
 [ext_resource path="res://stages/loadout/HittableLetters.gd" type="Script" id=9]
 [ext_resource path="res://gui/panels/panel_outside.tres" type="StyleBox" id=10]
 [ext_resource path="res://stages/loadout/relic_chamber.png" type="Texture" id=11]
-[ext_resource path="res://stages/loadout/RelichuntPopup.gd" type="Script" id=12]
-[ext_resource path="res://content/shared/difficulty/DifficultyBadge.tscn" type="PackedScene" id=13]
-[ext_resource path="res://content/icons/loadout_diff1.png" type="Texture" id=14]
-[ext_resource path="res://stages/loadout/PrestigePopup.gd" type="Script" id=15]
+[ext_resource path="res://stages/loadout/PrestigePopup.tscn" type="PackedScene" id=12]
+[ext_resource path="res://stages/loadout/RelichuntPopup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://stages/loadout/ColonizationPopup.tscn" type="PackedScene" id=14]
+[ext_resource path="res://stages/loadout/dummy2.png" type="Texture" id=15]
 [ext_resource path="res://stages/loadout/dummy.png" type="Texture" id=16]
 [ext_resource path="res://content/monster/FlashMaterial.tres" type="Material" id=17]
 [ext_resource path="res://stages/loadout/Monster.gd" type="Script" id=18]
-[ext_resource path="res://stages/loadout/MinerPopup.gd" type="Script" id=19]
 [ext_resource path="res://gui/fonts/FontLarge.tres" type="DynamicFont" id=20]
-[ext_resource path="res://gui/fonts/hungarian/FontSmall.tres" type="DynamicFont" id=21]
+
+[sub_resource type="AtlasTexture" id=109]
+atlas = ExtResource( 15 )
+region = Rect2( 0, 0, 45, 42 )
 
 [sub_resource type="SpriteFrames" id=108]
 animations = [ {
 "frames": [ ExtResource( 16 ) ],
-"loop": true,
+"loop": false,
+"name": "halloween",
+"speed": 1.0
+}, {
+"frames": [ SubResource( 109 ) ],
+"loop": false,
 "name": "default",
-"speed": 10.0
+"speed": 1.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=34]
@@ -40,12 +47,6 @@ colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 107 )
-
-[sub_resource type="ButtonGroup" id=3]
-
-[sub_resource type="ButtonGroup" id=4]
-
-[sub_resource type="ButtonGroup" id=5]
 
 [node name="LoadoutStage" type="Node"]
 script = ExtResource( 4 )
@@ -118,7 +119,7 @@ position = Vector2( 1, -18 )
 frames = SubResource( 108 )
 
 [node name="HitboxDefault" type="CollisionShape2D" parent="Dummy"]
-position = Vector2( 2, -17 )
+position = Vector2( 0, -17 )
 shape = SubResource( 34 )
 
 [node name="HitPosition" type="Position2D" parent="Dummy"]
@@ -459,7 +460,7 @@ margin_bottom = 125.0
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 475.0
-margin_bottom = 897.0
+margin_bottom = 97.0
 
 [node name="PanelTitleLabel" type="Label" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 459.0
@@ -470,6 +471,7 @@ text = "Choose your ???"
 align = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_bottom = 800.0
 rect_min_size = Vector2( 0, 800 )
 scroll_horizontal_enabled = false
 
@@ -479,572 +481,20 @@ columns = 2
 
 [node name="Tween" type="Tween" parent="CanvasLayer/ChoicePopup"]
 
-[node name="RelichuntPopup" type="CenterContainer" parent="CanvasLayer"]
+[node name="RelichuntPopup" parent="CanvasLayer" instance=ExtResource( 13 )]
+
+[node name="PrestigePopup" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme = ExtResource( 2 )
-script = ExtResource( 12 )
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/RelichuntPopup"]
-margin_left = 928.0
-margin_top = 508.0
-margin_right = 992.0
-margin_bottom = 572.0
-custom_styles/panel = ExtResource( 10 )
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer"]
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 1252.0
-margin_bottom = 1034.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 1204.0
-margin_bottom = 986.0
-
-[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 1188.0
-margin_bottom = 65.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "loadout.difficulty.title"
-align = 1
-
-[node name="DifficultyIcon" type="TextureRect" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer" groups=["unstyled"]]
-margin_top = 81.0
-margin_right = 1188.0
-margin_bottom = 241.0
-rect_min_size = Vector2( 280, 160 )
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 6
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 257.0
-margin_right = 1188.0
-margin_bottom = 314.0
-
-[node name="DifficultyButton4" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 313.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 3 )
-text = "loadout.difficulty.veryeasy"
-
-[node name="DifficultyButton1" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 329.0
-margin_right = 594.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 3 )
-text = "loadout.difficulty.easy"
-
-[node name="DifficultyButton2" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 610.0
-margin_right = 907.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 3 )
-text = "loadout.difficulty.medium"
-
-[node name="DifficultyButton3" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 923.0
-margin_right = 1188.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 3 )
-text = "loadout.difficulty.hard"
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 330.0
-margin_right = 1188.0
-margin_bottom = 414.0
-alignment = 1
-
-[node name="EasierButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 315.0
-margin_top = 13.0
-margin_right = 495.0
-margin_bottom = 70.0
-size_flags_vertical = 4
-text = "loadout.easier"
-
-[node name="DifficultyBadge" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource( 13 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 511.0
-margin_right = 669.0
-margin_bottom = 84.0
-
-[node name="HarderButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 685.0
-margin_top = 13.0
-margin_right = 873.0
-margin_bottom = 70.0
-size_flags_vertical = 4
-text = "loadout.harder"
-
-[node name="DifficultyExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 330.0
-margin_right = 1188.0
-margin_bottom = 355.0
-rect_min_size = Vector2( 500, 0 )
-align = 1
-autowrap = true
-
-[node name="MapSizeBox" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 371.0
-margin_right = 1188.0
-margin_bottom = 549.0
-
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
-margin_right = 1188.0
-margin_bottom = 24.0
-
-[node name="PanelTitleLabel3" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
-margin_top = 40.0
-margin_right = 1188.0
-margin_bottom = 105.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "loadout.mapsize.title"
-align = 1
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
-margin_top = 121.0
-margin_right = 1188.0
-margin_bottom = 178.0
-
-[node name="MapSizeButton1" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
-margin_right = 284.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 4 )
-text = "loadout.mapsize.small"
-
-[node name="MapSizeButton2" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
-margin_left = 300.0
-margin_right = 588.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 4 )
-text = "loadout.mapsize.medium"
-
-[node name="MapSizeButton3" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
-margin_left = 604.0
-margin_right = 888.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 4 )
-text = "loadout.mapsize.large"
-
-[node name="MapSizeButton4" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3"]
-margin_left = 904.0
-margin_right = 1188.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 4 )
-text = "loadout.mapsize.huge"
-
-[node name="MapSizeExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox"]
-visible = false
-margin_top = 194.0
-margin_right = 1188.0
-margin_bottom = 219.0
-rect_min_size = Vector2( 500, 0 )
-align = 1
-autowrap = true
-
-[node name="ModifiersBox" type="VBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 565.0
-margin_right = 1188.0
-margin_bottom = 857.0
-
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
-margin_right = 1188.0
-margin_bottom = 24.0
-
-[node name="PanelTitleLabel3" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
-margin_top = 40.0
-margin_right = 1188.0
-margin_bottom = 105.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "loadout.relichunt.modifiers"
-align = 1
-
-[node name="HBoxContainer3" type="GridContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
-margin_top = 121.0
-margin_right = 1188.0
-margin_bottom = 251.0
-columns = 2
-
-[node name="ModHyperactiveButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
-margin_right = 586.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.mode.hyperactive"
-align = 1
-
-[node name="ModLongTimeButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
-margin_left = 602.0
-margin_right = 1188.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.mode.longtime"
-align = 1
-
-[node name="ModMazeButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
-margin_top = 73.0
-margin_right = 586.0
-margin_bottom = 130.0
-size_flags_horizontal = 3
-text = "loadout.mode.maze"
-align = 1
-
-[node name="ModDoubleIronButton" type="CheckBox" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3"]
-margin_left = 602.0
-margin_top = 73.0
-margin_right = 1188.0
-margin_bottom = 130.0
-size_flags_horizontal = 3
-text = "loadout.mode.doubleiron"
-align = 1
-
-[node name="ModifierExplanationLabel" type="Label" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox"]
-margin_top = 267.0
-margin_right = 1188.0
-margin_bottom = 292.0
-rect_min_size = Vector2( 500, 0 )
-align = 1
-autowrap = true
-
-[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 873.0
-margin_right = 1188.0
-margin_bottom = 897.0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 913.0
-margin_right = 1188.0
-margin_bottom = 970.0
-
-[node name="CancelButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 586.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.cancel"
-
-[node name="StartButton" type="Button" parent="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 602.0
-margin_right = 1188.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.start"
-
-[node name="Control" type="Control" parent="CanvasLayer/RelichuntPopup"]
-margin_left = 960.0
-margin_top = 540.0
-margin_right = 960.0
-margin_bottom = 540.0
-
-[node name="HintPopup" type="PanelContainer" parent="CanvasLayer/RelichuntPopup/Control"]
-margin_left = 184.0
-margin_top = -127.0
-margin_right = 585.0
-margin_bottom = -46.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/RelichuntPopup/Control/HintPopup"]
-margin_left = 12.0
-margin_top = 12.0
-margin_right = 389.0
-margin_bottom = 69.0
-
-[node name="HintLabel" type="Label" parent="CanvasLayer/RelichuntPopup/Control/HintPopup/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 361.0
-margin_bottom = 41.0
-text = "pause.quit.popup"
-autowrap = true
-
-[node name="Tween" type="Tween" parent="CanvasLayer/RelichuntPopup"]
-
-[node name="PrestigePopup" type="CenterContainer" parent="CanvasLayer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme = ExtResource( 2 )
-script = ExtResource( 15 )
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PrestigePopup"]
-margin_left = 560.0
-margin_top = 310.0
-margin_right = 1360.0
-margin_bottom = 770.0
-rect_min_size = Vector2( 800, 460 )
-custom_styles/panel = ExtResource( 10 )
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PrestigePopup/PanelContainer"]
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 977.0
-margin_bottom = 428.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 929.0
-margin_bottom = 380.0
-
-[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 913.0
-margin_bottom = 65.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "loadout.prestige.title"
-align = 1
-
-[node name="HBoxContainer" type="GridContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 81.0
-margin_right = 913.0
-margin_bottom = 138.0
-columns = 3
-
-[node name="PrestigeMode1Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 280.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 5 )
-text = "loadout.prestige.normal"
-
-[node name="PrestigeMode2Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 296.0
-margin_right = 570.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 5 )
-text = "loadout.prestige.cobalt"
-
-[node name="PrestigeMode3Button" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 586.0
-margin_right = 913.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 200, 0 )
-size_flags_horizontal = 3
-toggle_mode = true
-group = SubResource( 5 )
-text = "loadout.prestige.countdown"
-
-[node name="ModeExplanationLabel" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 154.0
-margin_right = 913.0
-margin_bottom = 234.0
-rect_min_size = Vector2( 500, 80 )
-size_flags_horizontal = 3
-align = 1
-autowrap = true
-
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 267.0
-margin_right = 913.0
-margin_bottom = 291.0
-size_flags_vertical = 10
-
-[node name="PanelTitleLabel2" type="Label" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 194.0
-margin_right = 521.0
-margin_bottom = 259.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "Difficulty"
-align = 1
-
-[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 275.0
-margin_right = 521.0
-margin_bottom = 299.0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 307.0
-margin_right = 913.0
-margin_bottom = 364.0
-
-[node name="CancelButton" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 448.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.cancel"
-
-[node name="StartButton" type="Button" parent="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 464.0
-margin_right = 913.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.start"
-
-[node name="Tween" type="Tween" parent="CanvasLayer/PrestigePopup"]
-
-[node name="MinerPopup" type="CenterContainer" parent="CanvasLayer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-theme = ExtResource( 2 )
-script = ExtResource( 19 )
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MinerPopup"]
-margin_left = 560.0
-margin_top = 310.0
-margin_right = 1360.0
-margin_bottom = 770.0
-rect_min_size = Vector2( 800, 460 )
-custom_styles/panel = ExtResource( 10 )
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MinerPopup/PanelContainer"]
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 969.0
-margin_bottom = 484.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 921.0
-margin_bottom = 436.0
-
-[node name="PanelTitleLabel" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 905.0
-margin_bottom = 65.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "loadout.miner.title"
-align = 1
-
-[node name="HBoxContainer3" type="GridContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 81.0
-margin_right = 905.0
-margin_bottom = 211.0
-custom_constants/hseparation = 32
-columns = 2
-
-[node name="OptionScoresButton" type="CheckBox" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_right = 323.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "loadout.miner.scores.title"
-align = 1
-
-[node name="Label1" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 355.0
-margin_top = 16.0
-margin_right = 905.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 550, 0 )
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 21 )
-text = "loadout.miner.scores"
-autowrap = true
-
-[node name="OptionFuelButton" type="CheckBox" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_top = 73.0
-margin_right = 323.0
-margin_bottom = 130.0
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "loadout.miner.fuel.title"
-align = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 355.0
-margin_top = 89.0
-margin_right = 905.0
-margin_bottom = 113.0
-rect_min_size = Vector2( 550, 0 )
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 21 )
-text = "loadout.miner.fuel"
-autowrap = true
-
-[node name="ModeExplanationLabel" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 227.0
-margin_right = 905.0
-margin_bottom = 307.0
-rect_min_size = Vector2( 500, 80 )
-size_flags_horizontal = 3
-align = 1
-autowrap = true
-
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 323.0
-margin_right = 905.0
-margin_bottom = 347.0
-size_flags_vertical = 10
-
-[node name="PanelTitleLabel2" type="Label" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 194.0
-margin_right = 521.0
-margin_bottom = 259.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 3 )
-text = "Difficulty"
-align = 1
-
-[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 275.0
-margin_right = 521.0
-margin_bottom = 299.0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 363.0
-margin_right = 905.0
-margin_bottom = 420.0
-
-[node name="CancelButton" type="Button" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 444.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.cancel"
-
-[node name="StartButton" type="Button" parent="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 460.0
-margin_right = 905.0
-margin_bottom = 57.0
-size_flags_horizontal = 3
-text = "loadout.secondstage.start"
-
-[node name="Tween" type="Tween" parent="CanvasLayer/MinerPopup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -528.0
+margin_top = -258.0
+margin_right = 528.0
+margin_bottom = 258.0
+
+[node name="ColonizationPopup" parent="CanvasLayer" instance=ExtResource( 14 )]
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -1057,37 +507,6 @@ text = "loadout.secondstage.start"
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GizmoButton" to="." method="_on_GizmoButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/QuitLoadoutButton" to="." method="_on_QuitLoadoutButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/ProceedToSecondStageButton" to="." method="_on_ProceedToSecondStageButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton4" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton4_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton1" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton1_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton2" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton2_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/DifficultyButton3" to="CanvasLayer/RelichuntPopup" method="_on_DifficultyButton3_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/EasierButton" to="CanvasLayer/RelichuntPopup" method="_on_EasierButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/HarderButton" to="CanvasLayer/RelichuntPopup" method="_on_HarderButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton1" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton1_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton2" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton2_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton3" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton3_pressed"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/MapSizeBox/HBoxContainer3/MapSizeButton4" to="CanvasLayer/RelichuntPopup" method="_on_MapSizeButton4_pressed"]
-[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModHyperactiveButton" to="CanvasLayer/RelichuntPopup" method="_on_ModHyperactiveButton_toggled"]
-[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModLongTimeButton" to="CanvasLayer/RelichuntPopup" method="_on_ModLongTimeButton_toggled"]
-[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModMazeButton" to="CanvasLayer/RelichuntPopup" method="_on_ModMazeButton_toggled"]
-[connection signal="toggled" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/ModifiersBox/HBoxContainer3/ModDoubleIronButton" to="CanvasLayer/RelichuntPopup" method="_on_ModDoubleIronButton_toggled"]
-[connection signal="pressed" from="CanvasLayer/RelichuntPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_entered"]
-[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_focus_exited"]
-[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode1Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode1Button_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_entered"]
-[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_focus_exited"]
-[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode2Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode2Button_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_entered"]
-[connection signal="focus_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_focus_exited"]
-[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PrestigeMode3Button" to="CanvasLayer/PrestigePopup" method="_on_PrestigeMode3Button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PrestigePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]
-[connection signal="toggled" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionScoresButton" to="CanvasLayer/MinerPopup" method="_on_OptionScoresButton_toggled"]
-[connection signal="toggled" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/OptionFuelButton" to="CanvasLayer/MinerPopup" method="_on_OptionFuelButton_toggled"]
-[connection signal="pressed" from="CanvasLayer/MinerPopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="proceed" from="CanvasLayer/RelichuntPopup" to="." method="startRun"]
+[connection signal="proceed" from="CanvasLayer/PrestigePopup" to="." method="startRun"]
+[connection signal="proceed" from="CanvasLayer/ColonizationPopup" to="." method="startRun"]

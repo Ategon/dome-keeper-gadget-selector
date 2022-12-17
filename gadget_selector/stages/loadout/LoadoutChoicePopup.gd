@@ -14,7 +14,9 @@ func addOptions(type:String, options:Array, focusOption, locked: = []):
 	
 	panelsByOption.clear()
 	var cc = find_node("ChoicesContainer")
+	# Gadget Selector Mod
 	var sc = find_node("ScrollContainer")
+	# End GSM
 	for child in cc.get_children():
 		child.queue_free()
 	
@@ -22,9 +24,11 @@ func addOptions(type:String, options:Array, focusOption, locked: = []):
 		cc.columns = 2
 	else :
 		cc.columns = 3
-		
+	
+	# Gadget Selector Mod
 	var sizes = [0, 0]
 	var index = 0
+	# End GSM
 	
 	for option in options:
 		var isLocked = locked.has(option)
@@ -39,16 +43,16 @@ func addOptions(type:String, options:Array, focusOption, locked: = []):
 		if option == focusOption:
 			InputSystem.grabFocus(panel)
 		panelsByOption[option] = panel
-		
+		# Gadget Selector Mod
 		sizes[index % 2] += panel.rect_size.y
 		index += 1
-	
 	if sizes.min() <= 800:
 		sc.scroll_vertical_enabled = false
 		sc.rect_min_size = Vector2(0, 0)
 	else:
 		sc.scroll_vertical_enabled = true
 		sc.rect_min_size = Vector2(0, 800)
+	# End GSM
 
 func select():
 	for option in panelsByOption:

@@ -11,16 +11,13 @@ var keeper
 var dome
 var pet
 
+# Gadget Selector Mod
 var gizmoId = "gizmo0"
+# End GSM
 var gadgetId
 var keeperId
 var domeId
 var modeId
-var versionId
-
-const VERSION_STATE_FILE: = "user://version.txt"
-var gadgetPickerVersion = "v2.1"
-var currentVersion = ""
 
 var buttonToFocusOnChoicesClosed
 
@@ -30,25 +27,10 @@ func beforeReady():
 	Style.init(find_node("Menu"))
 	Style.init($CanvasLayer / ChoicePopup)
 
+# Gadget Selector Mod
 func _ready():
-	var save = File.new()
-	var err = save.open(VERSION_STATE_FILE, File.READ)
-	if err == OK:
-		currentVersion = save.get_as_text()
-	
 	self.addTranslations();
-		
-	var versionArray = currentVersion.split(".")
-	versionArray.remove(2)
-	if versionArray.join(".") != gadgetPickerVersion:
-		GameWorld.unlockElement("invalidversion")
-		$CanvasLayer / ChoicePopup.addOptions("version", ["invalidversion"], versionId, [])
-		buttonToFocusOnChoicesClosed = find_node("DomeButton")
-		openChoices()
-		pass
-
-func setVersion(id:String):
-	pass
+# End GSM
 
 func beforeStart():
 	Data.applyInitial("laser")
@@ -89,15 +71,16 @@ func beforeStart():
 	$CanvasLayer / PrestigePopup.backgroundHide = $CanvasLayer / ColorRect
 	$CanvasLayer / PrestigePopup.visible = true
 	$CanvasLayer / PrestigePopup.rect_position.y += $CanvasLayer / PrestigePopup.get_viewport_rect().size.y
-	$CanvasLayer / MinerPopup.backgroundHide = $CanvasLayer / ColorRect
-	$CanvasLayer / MinerPopup.visible = true
-	$CanvasLayer / MinerPopup.rect_position.y += $CanvasLayer / MinerPopup.get_viewport_rect().size.y
+	$CanvasLayer / ColonizationPopup.backgroundHide = $CanvasLayer / ColorRect
+	$CanvasLayer / ColonizationPopup.visible = true
+	$CanvasLayer / ColonizationPopup.rect_position.y += $CanvasLayer / ColonizationPopup.get_viewport_rect().size.y
 	$CanvasLayer / ColorRect.visible = true
 	$CanvasLayer / ColorRect.modulate.a = 0.0
 	
 	Level.map = $Map
 	Level.stage = self
 	
+	# Gadget Selector Mod
 	GameWorld.unlockElement("gizmo0")
 	GameWorld.unlockElement("teleporter")
 	GameWorld.unlockElement("condenser")
@@ -107,6 +90,7 @@ func beforeStart():
 	GameWorld.unlockElement("blastmining")
 	GameWorld.unlockElement("stunlaser")
 	GameWorld.unlockElement("lift")
+	# End GSM
 	
 	if GameWorld.unlockedElements.has(GameWorld.lastDomeId):
 		setDome(GameWorld.lastDomeId)
@@ -144,6 +128,7 @@ func beforeStart():
 	$Map.setTileData(preload("res://stages/loadout/LoadoutTileData.tscn").instance())
 	$Map.init()
 	
+	
 	updateMap()
 	
 	$Map.dig(Vector2( - 7, 3))
@@ -151,7 +136,8 @@ func beforeStart():
 	$Map.fill(Vector2( - 11, 2))
 	
 	InputSystem.grabFocus(find_node("ProceedToSecondStageButton"))
-	
+
+# Gadget Selector Mod
 func addTranslations():
 	var fs = File.new()
 	var err = fs.open("res://stages/loadout/locale/" + TranslationServer.get_locale() + ".csv", File.READ)
@@ -170,6 +156,7 @@ func addTranslations():
 			translations.add_message(cols[0], cols[1])
 
 	TranslationServer.add_translation(translations)
+# End GSM
 
 func updateInitialSkin(applyToKeeper: = true):
 	var id = GameWorld.lastSkinIds.get(keeperId, "")
@@ -503,6 +490,7 @@ func setGadget(gadgetId:String):
 
 	updateStartable()
 
+# Gadget Selector Mod
 func setGizmo(gizmoId:String):
 	self.gizmoId = "" if gizmoId == "gizmo0" else gizmoId
 	GameWorld.gadgetToKeep = self.gizmoId
@@ -510,6 +498,7 @@ func setGizmo(gizmoId:String):
 	if(self.gizmoId != ""): Data.unlockGadget(self.gizmoId)
 	if(self.gizmoId != ""): dome.unlockGadget(Data.gadgets.get(self.gizmoId, {}))
 	find_node("GizmoButton").text = "Gizmo" if self.gizmoId == "" else tr("upgrades." + self.gizmoId + ".title")
+# End GSM
 
 func setMode(modeId:String):
 	self.modeId = modeId
@@ -520,9 +509,6 @@ func setMode(modeId:String):
 	
 	find_node("ModeTextureRect").texture = load("res://content/icons/loadout_" + modeId + ".png")
 	find_node("ModeTextureRect").rect_min_size = find_node("ModeTextureRect").texture.get_size() * 4
-	
-	if modeId == CONST.MODE_MINER:
-		setGadget("orchard")
 	
 	updateStartable()
 
@@ -545,7 +531,6 @@ func setSkin(id:String):
 
 func updateStartable():
 	var startable = domeId and gadgetId and modeId and keeperId
-	startable = startable and (modeId != CONST.MODE_MINER or gadgetId == "orchard")
 	find_node("ProceedToSecondStageButton").disabled = not startable
 	
 func _on_DomeButton_pressed():
@@ -555,10 +540,7 @@ func _on_DomeButton_pressed():
 
 func _on_GadgetButton_pressed():
 	var gadgets
-	if modeId == CONST.MODE_MINER:
-		gadgets = ["orchard"]
-	else :
-		gadgets = ["shield", "repellent", "orchard"]
+	gadgets = ["shield", "repellent", "orchard"]
 	$CanvasLayer / ChoicePopup.addOptions("gadget", gadgets, gadgetId)
 	buttonToFocusOnChoicesClosed = find_node("GadgetButton")
 	openChoices()
@@ -570,7 +552,6 @@ func _on_KeeperButton_pressed():
 
 func _on_ModeButton_pressed():
 	$CanvasLayer / ChoicePopup.addOptions("mode", [CONST.MODE_RELICHUNT, CONST.MODE_PRESTIGE], modeId)
-
 	buttonToFocusOnChoicesClosed = find_node("ModeButton")
 	openChoices()
 
@@ -605,7 +586,7 @@ func closeChoices(popupInput):
 	if popupInput.popup.is_connected("choice_made", self, "choiceMade"):
 		popupInput.popup.disconnect("choice_made", self, "choiceMade")
 
-func _on_StartButton_pressed():
+func startRun():
 	Audio.sound("gui_loadout_startrun")
 	var loadout = Loadout.new(domeId, gadgetId, keeperId, modeId)
 	if GameWorld.buildType == CONST.BUILD_TYPE.EXHIBITION:
@@ -614,11 +595,12 @@ func _on_StartButton_pressed():
 	match modeId:
 		CONST.MODE_RELICHUNT:
 			loadout.worldModifiers = $CanvasLayer / RelichuntPopup.getWorldModifiers()
-		CONST.MODE_MINER:
-			pass
 		CONST.MODE_PRESTIGE:
+			if GameWorld.lastGameModeVariation == CONST.MODE_PRESTIGE_MINER:
+				loadout.primaryGadgetId = "orchard"
+		CONST.MODE_COLONIZATION:
 			pass
-			
+	
 	StageManager.startStage("stages/landing/landing", [loadout])
 	find_node("StartButton").disabled = true
 
@@ -644,7 +626,7 @@ func _on_ProceedToSecondStageButton_pressed():
 			GameWorld.pause()
 			Audio.muteSounds()
 		CONST.MODE_PRESTIGE:
-			if GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COBALT) or GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COUNTDOWN):
+			if GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COBALT) or GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COUNTDOWN) or GameWorld.isUnlocked(CONST.MODE_PRESTIGE_MINER):
 				Audio.sound("gui_select")
 				var popupInput = preload("res://gui/PopupInput.gd").new()
 				popupInput.popup = $CanvasLayer / PrestigePopup
@@ -654,11 +636,11 @@ func _on_ProceedToSecondStageButton_pressed():
 				GameWorld.pause()
 				Audio.muteSounds()
 			else :
-				_on_StartButton_pressed()
-		CONST.MODE_MINER:
+				startRun()
+		CONST.MODE_COLONIZATION:
 			Audio.sound("gui_select")
 			var popupInput = preload("res://gui/PopupInput.gd").new()
-			popupInput.popup = $CanvasLayer / MinerPopup
+			popupInput.popup = $CanvasLayer / ColonizationPopup
 			popupInput.connect("onStop", self, "closeSecondStagePopup", [popupInput.popup])
 			popupInput.integrate(self)
 			popupInput.popup.call_deferred("moveIn")
@@ -681,8 +663,10 @@ func _on_SkinButton_pressed():
 	buttonToFocusOnChoicesClosed = find_node("SkinButton")
 	openChoices()
 
+# Gadget Selector Mod
 func _on_GizmoButton_pressed():
 	var gizmos = ["gizmo0", "blastmining", "condenser", "converter", "drillbot", "lift", "probe", "stunlaser", "teleporter"]
 	$CanvasLayer / ChoicePopup.addOptions("gizmo", gizmos, gizmoId)
 	buttonToFocusOnChoicesClosed = find_node("GizmoButton")
 	openChoices()
+# End GSM
