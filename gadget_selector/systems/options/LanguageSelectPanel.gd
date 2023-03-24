@@ -37,7 +37,7 @@ var flag_hu = preload("res://systems/localization/flags/hu_HU.png")
 
 const translationDesc: = {
 	"ar_SA":[true], 
-	"bg_BG":[false, 60], 
+	"bg_BG":[false, 91], 
 	"cs_CZ":[true], 
 	"da_DK":[true], 
 	"de_DE":[true], 
@@ -49,7 +49,7 @@ const translationDesc: = {
 	"he_IL":[false, 0], 
 
 	"hu_HU":[true], 
-	"id_ID":[false, 36], 
+	"id_ID":[false, 30], 
 	"it_IT":[true], 
 	"ja_JP":[true], 
 	"ko_KR":[true], 
@@ -61,10 +61,10 @@ const translationDesc: = {
 	"ro_RO":[false, 100], 
 	"ru_RU":[true], 
 	"sv_SE":[true], 
-	"th_TH":[false, 27], 
+	"th_TH":[false, 82], 
 	"tr_TR":[true], 
 	"uk_UA":[true], 
-	"vi_VN":[false, 39], 
+	"vi_VN":[false, 40], 
 	"zh_CN":[true], 
 	"zh_TW":[true]
 }
@@ -83,13 +83,16 @@ func buildBindingUi():
 	for c in ProfessionalTranslations.get_children():
 		c.queue_free()
 
-	var firstLanguage
+	var englishOption
+	var gotFocus: = false
 	for code in TranslationServer.get_loaded_locales():
 		var language = Data.LanguageNamesByCode.get(code, code)
 		var flag = set_keeper_language_flag(code)
 		var details = translationDesc.get(code)
 		var description:String
+		# GSM
 		if (!details): continue
+		# End GSM
 		if details[0]:
 			description = ""
 		else :
@@ -101,9 +104,9 @@ func buildBindingUi():
 		var translationEntry = preload("res://systems/options/LanguageOption.tscn").instance()
 		translationEntry.init(flag, language, description)
 		translationEntry.connect("request_change", self, "set_local_lang", [code])
-		if not firstLanguage:
-			firstLanguage = translationEntry
-
+		if flag == flag_en:
+			englishOption = translationEntry
+		
 		if details[0]:
 			ProfessionalTranslations.add_child(translationEntry)
 		else :
@@ -111,6 +114,10 @@ func buildBindingUi():
 		
 		if code == TranslationServer.get_locale():
 			InputSystem.grabFocus(translationEntry)
+			gotFocus = true
+	
+	if not gotFocus:
+		InputSystem.grabFocus(englishOption)
 	
 func set_local_lang(languageCode):
 	TranslationServer.set_locale(languageCode)

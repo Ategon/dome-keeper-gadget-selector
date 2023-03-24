@@ -35,7 +35,7 @@ func addOptions(type:String, options:Array, focusOption, locked: = []):
 		var panel = preload("res://stages/loadout/LoadoutOption.tscn").instance()
 		var elementOk = GameWorld.unlockedElements.has(option) and not isLocked
 		var petOk = GameWorld.unlockedPets.has(option) or option == "pet0"
-		var skinOk = GameWorld.unlockedSkins.get(GameWorld.lastKeeperId, []).has(option) or option == "skin0"
+		var skinOk = GameWorld.unlockedSkins.get(GameWorld.loadoutStageConfig.keeperId, []).has(option) or option == "skin0"
 		panel.disabled = not (petOk or elementOk or skinOk)
 		panel.init(option, not isLocked, petOk, skinOk)
 		panel.connect("selected", self, "select")

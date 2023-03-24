@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://stages/loadout/LoadoutTileData.tscn" type="PackedScene" id=1]
 [ext_resource path="res://gui/theme.tres" type="Theme" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://stages/loadout/relic_chamber.png" type="Texture" id=11]
 [ext_resource path="res://stages/loadout/PrestigePopup.tscn" type="PackedScene" id=12]
 [ext_resource path="res://stages/loadout/RelichuntPopup.tscn" type="PackedScene" id=13]
-[ext_resource path="res://stages/loadout/ColonizationPopup.tscn" type="PackedScene" id=14]
 [ext_resource path="res://stages/loadout/dummy2.png" type="Texture" id=15]
 [ext_resource path="res://stages/loadout/dummy.png" type="Texture" id=16]
 [ext_resource path="res://content/monster/FlashMaterial.tres" type="Material" id=17]
@@ -26,14 +25,14 @@ region = Rect2( 0, 0, 45, 42 )
 
 [sub_resource type="SpriteFrames" id=108]
 animations = [ {
-"frames": [ ExtResource( 16 ) ],
-"loop": false,
-"name": "halloween",
-"speed": 1.0
-}, {
 "frames": [ SubResource( 109 ) ],
 "loop": false,
 "name": "default",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 16 ) ],
+"loop": false,
+"name": "halloween",
 "speed": 1.0
 } ]
 
@@ -144,7 +143,7 @@ grow_vertical = 0
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
 margin_right = 611.0
-margin_bottom = 607.0
+margin_bottom = 556.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 theme = ExtResource( 2 )
@@ -152,7 +151,7 @@ theme = ExtResource( 2 )
 [node name="Menu" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
 margin_left = 615.0
 margin_right = 1304.0
-margin_bottom = 607.0
+margin_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -163,7 +162,7 @@ theme = ExtResource( 2 )
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 673.0
-margin_bottom = 591.0
+margin_bottom = 524.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -174,12 +173,12 @@ custom_styles/panel = ExtResource( 10 )
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 625.0
-margin_bottom = 543.0
+margin_bottom = 476.0
 size_flags_horizontal = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer"]
 margin_right = 593.0
-margin_bottom = 438.0
+margin_bottom = 371.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
@@ -187,18 +186,18 @@ size_flags_vertical = 4
 margin_left = 12.0
 margin_top = 12.0
 margin_right = 581.0
-margin_bottom = 426.0
+margin_bottom = 359.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 553.0
-margin_bottom = 398.0
+margin_bottom = 331.0
 custom_constants/separation = 50
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 537.0
-margin_bottom = 382.0
+margin_bottom = 315.0
 grow_horizontal = 2
 custom_constants/vseparation = 10
 custom_constants/hseparation = 60
@@ -365,9 +364,9 @@ text = "brutal"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer"]
-margin_top = 454.0
+margin_top = 387.0
 margin_right = 593.0
-margin_bottom = 511.0
+margin_bottom = 444.0
 
 [node name="QuitLoadoutButton" type="Button" parent="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_right = 288.0
@@ -387,7 +386,7 @@ text = "loadout.proceed"
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
 margin_left = 1308.0
 margin_right = 1920.0
-margin_bottom = 607.0
+margin_bottom = 556.0
 size_flags_horizontal = 3
 custom_constants/margin_right = 30
 custom_constants/margin_top = 30
@@ -396,9 +395,9 @@ custom_constants/margin_bottom = 30
 
 [node name="Control" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/MarginContainer"]
 margin_left = 30.0
-margin_top = 256.0
+margin_top = 231.0
 margin_right = 582.0
-margin_bottom = 350.0
+margin_bottom = 325.0
 rect_min_size = Vector2( 500, 0 )
 size_flags_vertical = 4
 theme = ExtResource( 2 )
@@ -476,12 +475,17 @@ rect_min_size = Vector2( 0, 800 )
 scroll_horizontal_enabled = false
 
 [node name="ChoicesContainer" type="GridContainer" parent="CanvasLayer/ChoicePopup/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+margin_left = 229.0
+margin_top = 81.0
+margin_right = 229.0
+margin_bottom = 81.0
 size_flags_horizontal = 4
 columns = 2
 
 [node name="Tween" type="Tween" parent="CanvasLayer/ChoicePopup"]
 
 [node name="RelichuntPopup" parent="CanvasLayer" instance=ExtResource( 13 )]
+visible = false
 
 [node name="PrestigePopup" parent="CanvasLayer" instance=ExtResource( 12 )]
 visible = false
@@ -494,19 +498,16 @@ margin_top = -258.0
 margin_right = 528.0
 margin_bottom = 258.0
 
-[node name="ColonizationPopup" parent="CanvasLayer" instance=ExtResource( 14 )]
-
 [node name="Tween" type="Tween" parent="."]
 
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/DomeButton" to="." method="_on_DomeButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/KeeperButton" to="." method="_on_KeeperButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/PetButton" to="." method="_on_PetButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/SkinButton" to="." method="_on_SkinButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GizmoButton" to="." method="_on_GizmoButton_pressed"] 
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GadgetButton" to="." method="_on_GadgetButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/ModeButton" to="." method="_on_ModeButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer/GizmoButton" to="." method="_on_GizmoButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/QuitLoadoutButton" to="." method="_on_QuitLoadoutButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer/Menu/PanelContainer/VBoxContainer/HBoxContainer/ProceedToSecondStageButton" to="." method="_on_ProceedToSecondStageButton_pressed"]
 [connection signal="proceed" from="CanvasLayer/RelichuntPopup" to="." method="startRun"]
 [connection signal="proceed" from="CanvasLayer/PrestigePopup" to="." method="startRun"]
-[connection signal="proceed" from="CanvasLayer/ColonizationPopup" to="." method="startRun"]

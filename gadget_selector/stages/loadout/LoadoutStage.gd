@@ -1,6 +1,6 @@
 extends Stage
 
-onready  var DomeButton = find_node("DomeButton")
+onready var DomeButton = find_node("DomeButton")
 
 var keeperPhase: = 0
 var keeperWait: = 0.0
@@ -11,26 +11,22 @@ var keeper
 var dome
 var pet
 
+var buttonToFocusOnChoicesClosed
+
 # Gadget Selector Mod
 var gizmoId = "gizmo0"
 # End GSM
-var gadgetId
-var keeperId
-var domeId
-var modeId
-
-var buttonToFocusOnChoicesClosed
-
-func beforeReady():
-	GameWorld.prepareCleanData()
-	Style.setPalette("1_1")
-	Style.init(find_node("Menu"))
-	Style.init($CanvasLayer / ChoicePopup)
 
 # Gadget Selector Mod
 func _ready():
 	self.addTranslations();
 # End GSM
+
+func beforeReady():
+	GameWorld.prepareCleanData()
+	Style.setPalette("palette_1_1")
+	Style.init(find_node("Menu"))
+	Style.init($CanvasLayer / ChoicePopup)
 
 func beforeStart():
 	Data.applyInitial("laser")
@@ -71,9 +67,6 @@ func beforeStart():
 	$CanvasLayer / PrestigePopup.backgroundHide = $CanvasLayer / ColorRect
 	$CanvasLayer / PrestigePopup.visible = true
 	$CanvasLayer / PrestigePopup.rect_position.y += $CanvasLayer / PrestigePopup.get_viewport_rect().size.y
-	$CanvasLayer / ColonizationPopup.backgroundHide = $CanvasLayer / ColorRect
-	$CanvasLayer / ColonizationPopup.visible = true
-	$CanvasLayer / ColonizationPopup.rect_position.y += $CanvasLayer / ColonizationPopup.get_viewport_rect().size.y
 	$CanvasLayer / ColorRect.visible = true
 	$CanvasLayer / ColorRect.modulate.a = 0.0
 	
@@ -90,50 +83,37 @@ func beforeStart():
 	GameWorld.unlockElement("blastmining")
 	GameWorld.unlockElement("stunlaser")
 	GameWorld.unlockElement("lift")
+	GameWorld.unlockElement("autocannon")
+	GameWorld.unlockElement("prospectionmeter")
+	GameWorld.unlockElement("spire")
 	# End GSM
 	
-	if GameWorld.unlockedElements.has(GameWorld.lastDomeId):
-		setDome(GameWorld.lastDomeId)
+	if GameWorld.unlockedElements.has(GameWorld.loadoutStageConfig.domeId):
+		setDome(GameWorld.loadoutStageConfig.domeId)
 	else :
 		setDome("dome1")
 	
-	if GameWorld.unlockedElements.has(GameWorld.lastGameModeId):
-		setMode(GameWorld.lastGameModeId)
+	if GameWorld.unlockedElements.has(GameWorld.loadoutStageConfig.modeId):
+		setMode(GameWorld.loadoutStageConfig.modeId)
 	else :
 		setMode("relichunt")
 	
-	if GameWorld.unlockedElements.has(GameWorld.lastKeeperId):
-		setKeeper(GameWorld.lastKeeperId)
+	if GameWorld.unlockedElements.has(GameWorld.loadoutStageConfig.keeperId):
+		setKeeper(GameWorld.loadoutStageConfig.keeperId)
 	else :
 		setKeeper("keeper1")
 	
-	if domeId and GameWorld.unlockedElements.has(GameWorld.lastGadgetId):
-		setGadget(GameWorld.lastGadgetId)
-	else :
-		setGadget("shield")
-	
-	if GameWorld.unlockedElements.has(GameWorld.lastGameModeId):
-		setMode(GameWorld.lastGameModeId)
+	if GameWorld.unlockedElements.has(GameWorld.loadoutStageConfig.modeId):
+		setMode(GameWorld.loadoutStageConfig.modeId)
 	else :
 		setMode("relichunt")
 	
-	if GameWorld.unlockedPets.has(GameWorld.lastPetId):
-		setPet(GameWorld.lastPetId)
+	if GameWorld.unlockedPets.has(GameWorld.loadoutStageConfig.petId):
+		setPet(GameWorld.loadoutStageConfig.petId)
 	else :
 		setPet("pet0")
 	
-	
-
-	
-	$Map.setTileData(preload("res://stages/loadout/LoadoutTileData.tscn").instance())
-	$Map.init()
-	
-	
-	updateMap()
-	
-	$Map.dig(Vector2( - 7, 3))
-	$Map.dig(Vector2( - 6, 3))
-	$Map.fill(Vector2( - 11, 2))
+	resetMap()
 	
 	InputSystem.grabFocus(find_node("ProceedToSecondStageButton"))
 
@@ -158,29 +138,10 @@ func addTranslations():
 	TranslationServer.add_translation(translations)
 # End GSM
 
-func updateInitialSkin(applyToKeeper: = true):
-	var id = GameWorld.lastSkinIds.get(keeperId, "")
-	if GameWorld.unlockedSkins.get(keeperId, {}).has(id):
-		if applyToKeeper:
-			setSkin(id)
-		else :
-			GameWorld.keeperSkinId = id
-	else :
-		if applyToKeeper:
-			setSkin("skin0")
-		else :
-			GameWorld.keeperSkinId = "skin0"
-	
-func updateMap():
-	for x in range( - 12, 0):
-		for y in range( - 1, 5):
-			$Map.revealTile(Vector2(x, y))
-	for x in range( - 13, 10):
-		for y in range( - 1, 4):
-			$Map.updateBorderSprite(x, y)
-	for x in range( - 11, - 5):
-		for y in range(1, 3):
-			$Map.dig(Vector2(x, y))
+func resetMap():
+	$Map.setTileData(preload("res://stages/loadout/LoadoutTileData.tscn").instance())
+	$Map.init()
+	$Map.revealInitialState()
 
 func beforeEnd():
 	Data.clearListeners()
@@ -189,17 +150,17 @@ func _process(delta):
 	if GameWorld.paused:
 		return 
 	
-	match keeperId:
+	match GameWorld.loadoutStageConfig.keeperId:
 		"keeper1":processKeeper1(delta)
 		"keeper2":processKeeper2(delta)
 	
-	match domeId:
+	match GameWorld.loadoutStageConfig.domeId:
 		"dome1":processDome1(delta)
 		"dome2":processDome2(delta)
 
 func updateOptionalButtons():
 	var hasPetChoice = GameWorld.unlockedPets.size() > 0
-	var hasSkinChoice = GameWorld.unlockedSkins.get(keeperId, []).size() > 0
+	var hasSkinChoice = GameWorld.unlockedSkins.get(GameWorld.loadoutStageConfig.keeperId, []).size() > 0
 	
 	find_node("PetPlaceholder").visible = not hasPetChoice and hasSkinChoice
 	find_node("SkinPlaceholder").visible = hasPetChoice and not hasSkinChoice
@@ -210,7 +171,11 @@ func processDome1(delta):
 	if domeWait > 0.0:
 		domeWait -= delta
 	else :
-		var laser = get_tree().get_nodes_in_group("primaryWeapon").front()
+		var lasers = get_tree().get_nodes_in_group("primaryWeapon")
+		if lasers.size() == 0:
+			return 
+		
+		var laser = lasers.front()
 		match domePhase:
 			0:
 				domeWait = 0.5
@@ -260,7 +225,10 @@ func processDome2(delta):
 	if domeWait > 0.0:
 		domeWait -= delta
 	else :
-		var sword = get_tree().get_nodes_in_group("primaryWeapon").front()
+		var swords = get_tree().get_nodes_in_group("primaryWeapon")
+		if swords.size() == 0:
+			return 
+		var sword = swords.front()
 		match domePhase:
 			0:
 				domeWait = 0.5
@@ -399,18 +367,6 @@ func processKeeper2(delta):
 				$Tween.interpolate_callback(self, 1.0, "clearResources")
 				$Tween.start()
 
-func resetMap():
-	$Map.isFirstDrop = true
-	$Map.fill(Vector2( - 11, 0))
-	$Map.growTile(Vector2( - 11, 0), 10)
-	$Map.fill(Vector2( - 11, 2))
-	$Map.growTile(Vector2( - 11, 2), 0)
-	$Map.fill(Vector2( - 11, 3))
-	$Map.growTile(Vector2( - 11, 3), 10)
-	$Map.fill(Vector2( - 11, 4))
-	$Map.growTile(Vector2( - 11, 4), 10)
-	updateMap()
-
 func clearResources():
 	for r in get_tree().get_nodes_in_group("drops"):
 		r.shred()
@@ -424,71 +380,70 @@ func moveKeeper(posNode)->bool:
 		keeper.moveDirectionInput = (d * 0.1).clamped(1.0)
 		return false
 
+
 func setDome(domeId:String):
-	self.domeId = domeId
-	GameWorld.lastDomeId = domeId
+	if dome and GameWorld.loadoutStageConfig.domeId == domeId:
+		return 
+	
+	GameWorld.loadoutStageConfig.domeId = domeId
 	find_node("DomeButton").text = tr("upgrades." + domeId + ".title")
 	domePhase = 0
 	domeWait = 0
 	
 	if dome:
-		dome.queue_free()
+		dome.unlisten()
+		dome.free()
 		pet = null
 	
 	Data.unlockGadget(domeId)
 	dome = Data.domeScene(domeId).instance()
 	Level.dome = dome
 	dome.position = find_node("DomePosition").position
-	dome.unlockGadget(Data.gadgets.get(gadgetId, {}))
+	dome.unlockGadget(Data.gadgets.get(GameWorld.loadoutStageConfig.primaryGadgetId, {}))
 	add_child(dome)
 	dome.init()
-	Data.unlockGadget(dome.primaryWeapon)
-	dome.addWeapon()
 	dome.uiRender()
 	Level.dome = dome
 	
-	
-	if gadgetId == "orchard":
-		setGadget("orchard")
-	
-	if GameWorld.lastPetId:
-		setPet(GameWorld.lastPetId)
-	
-	updateStartable()
+	setGadget(GameWorld.loadoutStageConfig.primaryGadgetId)
+	setPet(GameWorld.loadoutStageConfig.petId)
 
 func setKeeper(keeperId:String):
-	self.keeperId = keeperId
-	GameWorld.lastKeeperId = keeperId
+	if keeper and GameWorld.loadoutStageConfig.keeperId == keeperId:
+		return 
+	
 	keeperPhase = 0
 	keeperWait = 0
 	
 	if keeper:
-		keeper.queue_free()
+		keeper.kill()
+	for p in get_tree().get_nodes_in_group("keeper_projectiles"):
+		p.destroy()
 	
-	updateInitialSkin(false)
 	keeper = Data.keeperScene(keeperId).instance()
-	Level.keeper = keeper
 	keeper.position = find_node("KeeperPosition1").position
 	Data.unlockGadget(keeperId)
 	add_child(keeper)
+	if GameWorld.loadoutStageConfig.keeperId != keeperId:
+		setSkin("skin0")
+	else :
+		setSkin(GameWorld.loadoutStageConfig.skinId)
+	Level.keeper = keeper
+	GameWorld.loadoutStageConfig.keeperId = keeperId
 	find_node("KeeperButton").text = tr("upgrades." + keeperId + ".title")
 
-	updateStartable()
 	updateOptionalButtons()
 	if $Map.tileData:
 		resetMap()
 	clearResources()
 
 func setGadget(gadgetId:String):
-	if self.gadgetId:
-		dome.removeGadget(Data.gadgets.get(self.gadgetId, {}))
-	self.gadgetId = gadgetId
-	GameWorld.lastGadgetId = gadgetId
+	if GameWorld.loadoutStageConfig.primaryGadgetId:
+		dome.removePrimaryGadget()
+	GameWorld.loadoutStageConfig.primaryGadgetId = gadgetId
 	Data.unlockGadget(gadgetId)
 	dome.unlockGadget(Data.gadgets.get(gadgetId, {}))
 	find_node("GadgetButton").text = tr("upgrades." + gadgetId + ".title")
-
-	updateStartable()
 
 # Gadget Selector Mod
 func setGizmo(gizmoId:String):
@@ -501,23 +456,23 @@ func setGizmo(gizmoId:String):
 # End GSM
 
 func setMode(modeId:String):
-	self.modeId = modeId
-	GameWorld.lastGameModeId = modeId
+	if modeId != GameWorld.loadoutStageConfig.modeId:
+		GameWorld.loadoutStageConfig.modeConfig.clear()
+	
+	GameWorld.loadoutStageConfig.modeId = modeId
 	find_node("ModeButton").text = tr("upgrades." + modeId + ".title")
 	find_node("ModeTop").text = tr("upgrades." + modeId + ".title")
 	find_node("ModeBottom").text = tr("upgrades." + modeId + ".desc")
 	
 	find_node("ModeTextureRect").texture = load("res://content/icons/loadout_" + modeId + ".png")
 	find_node("ModeTextureRect").rect_min_size = find_node("ModeTextureRect").texture.get_size() * 4
-	
-	updateStartable()
 
 func setPet(id:String):
-	GameWorld.lastPetId = id
 	if pet:
 		pet.queue_free()
 		pet = null
 	
+	GameWorld.loadoutStageConfig.petId = id
 	if id == "pet0" or id == "":
 		return 
 	
@@ -525,33 +480,38 @@ func setPet(id:String):
 	dome.add_child(pet)
 
 func setSkin(id:String):
+	if id == "":
+		id = "skin0"
 	keeper.setSkin(id)
-	GameWorld.keeperSkinId = id
-	GameWorld.lastSkinIds[keeperId] = id
+	GameWorld.loadoutStageConfig.skinId = id
 
-func updateStartable():
-	var startable = domeId and gadgetId and modeId and keeperId
-	find_node("ProceedToSecondStageButton").disabled = not startable
-	
 func _on_DomeButton_pressed():
-	$CanvasLayer / ChoicePopup.addOptions("dome", ["dome1", "dome2"], domeId, [])
+	$CanvasLayer / ChoicePopup.addOptions("dome", ["dome1", "dome2"], GameWorld.loadoutStageConfig.domeId, [])
 	buttonToFocusOnChoicesClosed = find_node("DomeButton")
 	openChoices()
 
 func _on_GadgetButton_pressed():
 	var gadgets
 	gadgets = ["shield", "repellent", "orchard"]
-	$CanvasLayer / ChoicePopup.addOptions("gadget", gadgets, gadgetId)
+	$CanvasLayer / ChoicePopup.addOptions("gadget", gadgets, GameWorld.loadoutStageConfig.primaryGadgetId)
 	buttonToFocusOnChoicesClosed = find_node("GadgetButton")
 	openChoices()
 
+# Gadget Selector Mod
+func _on_GizmoButton_pressed():
+	var gizmos = ["gizmo0", "blastmining", "condenser", "converter", "drillbot", "lift", "probe", "stunlaser", "teleporter", "autocannon", "prospectionmeter", "spire"]
+	$CanvasLayer / ChoicePopup.addOptions("gizmo", gizmos, gizmoId)
+	buttonToFocusOnChoicesClosed = find_node("GizmoButton")
+	openChoices()
+# End GSM
+
 func _on_KeeperButton_pressed():
-	$CanvasLayer / ChoicePopup.addOptions("keeper", ["keeper1", "keeper2"], keeperId, [])
+	$CanvasLayer / ChoicePopup.addOptions("keeper", ["keeper1", "keeper2"], GameWorld.loadoutStageConfig.keeperId, [])
 	buttonToFocusOnChoicesClosed = find_node("KeeperButton")
 	openChoices()
 
 func _on_ModeButton_pressed():
-	$CanvasLayer / ChoicePopup.addOptions("mode", [CONST.MODE_RELICHUNT, CONST.MODE_PRESTIGE], modeId)
+	$CanvasLayer / ChoicePopup.addOptions("mode", [CONST.MODE_RELICHUNT, CONST.MODE_PRESTIGE], GameWorld.loadoutStageConfig.modeId)
 	buttonToFocusOnChoicesClosed = find_node("ModeButton")
 	openChoices()
 
@@ -588,20 +548,23 @@ func closeChoices(popupInput):
 
 func startRun():
 	Audio.sound("gui_loadout_startrun")
-	var loadout = Loadout.new(domeId, gadgetId, keeperId, modeId)
-	if GameWorld.buildType == CONST.BUILD_TYPE.EXHIBITION:
-		loadout.fixedMap("Exhibition")
+	var startData = LevelStartData.new()
+	startData.loadout = GameWorld.loadoutStageConfig.duplicate()
 	
-	match modeId:
+	if GameWorld.buildType == CONST.BUILD_TYPE.EXHIBITION:
+		startData.tileDataPresetId = ""
+	
+	match GameWorld.loadoutStageConfig.modeId:
 		CONST.MODE_RELICHUNT:
-			loadout.worldModifiers = $CanvasLayer / RelichuntPopup.getWorldModifiers()
+			GameWorld.loadoutStageConfig.modeConfig[CONST.MODE_CONFIG_RELICHUNT_WORLDMODIFIERS] = $CanvasLayer / RelichuntPopup.getWorldModifiers()
+			startData.loadout.modeConfig = GameWorld.loadoutStageConfig.modeConfig.duplicate()
 		CONST.MODE_PRESTIGE:
-			if GameWorld.lastGameModeVariation == CONST.MODE_PRESTIGE_MINER:
-				loadout.primaryGadgetId = "orchard"
+			if GameWorld.loadoutStageConfig.modeConfig.get(CONST.MODE_CONFIG_PRESTIGE_VARIANT, "") == CONST.MODE_PRESTIGE_MINER:
+				startData.loadout.primaryGadgetId = "orchard"
 		CONST.MODE_COLONIZATION:
 			pass
 	
-	StageManager.startStage("stages/landing/landing", [loadout])
+	StageManager.startStage("stages/landing/landing", [startData])
 	find_node("StartButton").disabled = true
 
 func closeSecondStagePopup(popup):
@@ -615,7 +578,7 @@ func _on_QuitLoadoutButton_pressed():
 	find_node("QuitLoadoutButton").disabled = true
 
 func _on_ProceedToSecondStageButton_pressed():
-	match modeId:
+	match GameWorld.loadoutStageConfig.modeId:
 		CONST.MODE_RELICHUNT:
 			Audio.sound("gui_select")
 			var popupInput = preload("res://gui/PopupInput.gd").new()
@@ -626,17 +589,14 @@ func _on_ProceedToSecondStageButton_pressed():
 			GameWorld.pause()
 			Audio.muteSounds()
 		CONST.MODE_PRESTIGE:
-			if GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COBALT) or GameWorld.isUnlocked(CONST.MODE_PRESTIGE_COUNTDOWN) or GameWorld.isUnlocked(CONST.MODE_PRESTIGE_MINER):
-				Audio.sound("gui_select")
-				var popupInput = preload("res://gui/PopupInput.gd").new()
-				popupInput.popup = $CanvasLayer / PrestigePopup
-				popupInput.connect("onStop", self, "closeSecondStagePopup", [popupInput.popup])
-				popupInput.integrate(self)
-				popupInput.popup.call_deferred("moveIn")
-				GameWorld.pause()
-				Audio.muteSounds()
-			else :
-				startRun()
+			Audio.sound("gui_select")
+			var popupInput = preload("res://gui/PopupInput.gd").new()
+			popupInput.popup = $CanvasLayer / PrestigePopup
+			popupInput.connect("onStop", self, "closeSecondStagePopup", [popupInput.popup])
+			popupInput.integrate(self)
+			popupInput.popup.call_deferred("moveIn")
+			GameWorld.pause()
+			Audio.muteSounds()
 		CONST.MODE_COLONIZATION:
 			Audio.sound("gui_select")
 			var popupInput = preload("res://gui/PopupInput.gd").new()
@@ -650,23 +610,18 @@ func _on_ProceedToSecondStageButton_pressed():
 func _on_PetButton_pressed():
 	var options = ["pet0"]
 	options.append_array(GameWorld.unlockedPets)
-	$CanvasLayer / ChoicePopup.addOptions("pet", options, GameWorld.lastPetId, [])
+	var id = GameWorld.loadoutStageConfig.petId
+	if id == null or id == "":
+		id = "pet0"
+	$CanvasLayer / ChoicePopup.addOptions("pet", options, id, [])
 	buttonToFocusOnChoicesClosed = find_node("PetButton")
 	openChoices()
 
 func _on_SkinButton_pressed():
 	var options = ["skin0"]
-	var lastSkin = GameWorld.lastSkinIds.get(keeper.techId, "")
+	var lastSkin = GameWorld.loadoutStageConfig.skinId
 	var choice = lastSkin if lastSkin else ("skin0")
 	options.append_array(GameWorld.unlockedSkins.get(keeper.techId, []))
 	$CanvasLayer / ChoicePopup.addOptions("skin", options, choice, [])
 	buttonToFocusOnChoicesClosed = find_node("SkinButton")
 	openChoices()
-
-# Gadget Selector Mod
-func _on_GizmoButton_pressed():
-	var gizmos = ["gizmo0", "blastmining", "condenser", "converter", "drillbot", "lift", "probe", "stunlaser", "teleporter"]
-	$CanvasLayer / ChoicePopup.addOptions("gizmo", gizmos, gizmoId)
-	buttonToFocusOnChoicesClosed = find_node("GizmoButton")
-	openChoices()
-# End GSM
