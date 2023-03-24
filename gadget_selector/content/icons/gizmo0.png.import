@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/loadout_condenser.png-064fa6665c12c62e3eb95cead3588120.stex"
+path="res://.import/gizmo0.png-3aebe602107b55c5c34d58de7dff7b1a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://content/icons/loadout_condenser.png"
-dest_files=[ "res://.import/loadout_condenser.png-064fa6665c12c62e3eb95cead3588120.stex" ]
+source_file="res://content/icons/gizmo0.png"
+dest_files=[ "res://.import/gizmo0.png-3aebe602107b55c5c34d58de7dff7b1a.stex" ]
 
 [params]
 

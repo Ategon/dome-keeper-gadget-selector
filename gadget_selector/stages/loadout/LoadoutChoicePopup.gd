@@ -36,8 +36,11 @@ func addOptions(type:String, options:Array, focusOption, locked: = []):
 		var elementOk = GameWorld.unlockedElements.has(option) and not isLocked
 		var petOk = GameWorld.unlockedPets.has(option) or option == "pet0"
 		var skinOk = GameWorld.unlockedSkins.get(GameWorld.loadoutStageConfig.keeperId, []).has(option) or option == "skin0"
-		panel.disabled = not (petOk or elementOk or skinOk)
-		panel.init(option, not isLocked, petOk, skinOk)
+		# GSM
+		var gizmoOk = option in ["gizmo0", "blastmining", "condenser", "converter", "drillbot", "lift", "probe", "stunlaser", "teleporter", "autocannon", "prospectionmeter", "spire"]
+		panel.disabled = not (petOk or elementOk or skinOk or gizmoOk)
+		panel.init(option, not isLocked, petOk, skinOk, gizmoOk)
+		# END GSM
 		panel.connect("selected", self, "select")
 		cc.add_child(panel)
 		if option == focusOption:

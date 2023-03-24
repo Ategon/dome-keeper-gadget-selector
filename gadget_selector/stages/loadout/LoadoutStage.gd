@@ -72,21 +72,7 @@ func beforeStart():
 	
 	Level.map = $Map
 	Level.stage = self
-	
-	# Gadget Selector Mod
-	GameWorld.unlockElement("gizmo0")
-	GameWorld.unlockElement("teleporter")
-	GameWorld.unlockElement("condenser")
-	GameWorld.unlockElement("converter")
-	GameWorld.unlockElement("drillbot")
-	GameWorld.unlockElement("probe")
-	GameWorld.unlockElement("blastmining")
-	GameWorld.unlockElement("stunlaser")
-	GameWorld.unlockElement("lift")
-	GameWorld.unlockElement("autocannon")
-	GameWorld.unlockElement("prospectionmeter")
-	GameWorld.unlockElement("spire")
-	# End GSM
+
 	
 	if GameWorld.unlockedElements.has(GameWorld.loadoutStageConfig.domeId):
 		setDome(GameWorld.loadoutStageConfig.domeId)
